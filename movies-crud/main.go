@@ -51,7 +51,7 @@ func createMovie(w http.ResponseWriter, r *http.Request) {
 
 	movie.ID = strconv.Itoa(rand.Intn(100000000))
 	movies = append(movies, movie)
-	json.NewDecoder(w).Encode(movie)
+	json.NewEncoder(w).Encode(movie)
 }
 
 func updateMovie(w http.ResponseWriter, r *http.Request) {
@@ -66,10 +66,11 @@ func updateMovie(w http.ResponseWriter, r *http.Request) {
 
 			movie.ID = strconv.Itoa(rand.Intn(100000000))
 			movies = append(movies, movie)
-			json.NewDecoder(w).Encode(movie)
+			json.NewEncoder(w).Encode(movie)
 			return
 		}
 	}
+	http.Error(w, "Movie not found", http.StatusNotFound)
 }
 
 func deleteMovie(w http.ResponseWriter, r *http.Request) {
