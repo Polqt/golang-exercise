@@ -6,9 +6,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-
+	"math/rand"
 	"github.com/gorilla/mux"
-	"golang.org/x/exp/rand"
 )
 
 type Movie struct {
@@ -40,6 +39,8 @@ func getMovie(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+
+	http.Error(w, "Movie not found", http.StatusNotFound)
 }
 
 func createMovie(w http.ResponseWriter, r *http.Request) {
@@ -59,7 +60,14 @@ func updateMovie(w http.ResponseWriter, r *http.Request) {
 
 	for index, item := range movies {
 		if item.ID == params["id"] {
-			
+			movies = append(movies[:index], movies[index+1:]...)
+			var movie Movie
+			_ = json.NewDecoder(r.Body).Decode((&movie))
+
+			movie.ID = strconv.Itoa(rand.Intn(100000000))
+			movies = append(movies, movie)
+			json.NewDecoder(w).Encode(movie)
+			return
 		}
 	}
 }
