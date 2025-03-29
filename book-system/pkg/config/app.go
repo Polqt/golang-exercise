@@ -2,7 +2,7 @@ package config
 
 import (
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 var (
@@ -10,7 +10,7 @@ var (
 )
 
 func Connect() {
-	d, err := gorm.Open("mysql", "Polqt:Hidalgo001/bookstore?charset=utf8&parseTime=True&loc=Local")
+	d, err := gorm.Open("postgres", "host=localhost user=postgres password=hidalgo001 dbname=bookstore port=5432 sslmode=disable")
 	if err != nil {
 		panic(err)
 	}
